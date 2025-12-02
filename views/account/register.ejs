@@ -1,0 +1,39 @@
+<div class="login-container">
+  <% if (title) { %>
+    <h1><%= title %></h1>
+  <% } else {
+    res.redirect('/')
+  } %>
+
+  <% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
+
+  <%# Display flash messages if any %>
+  <%- messages() %>
+
+  <form action="/account/register" method="post">
+    <label for="firstname">First Name:</label>
+    <input type="text" name="account_firstname" id="accountFirstname" required value="<%= locals.account_firstname %>">
+
+    <label for="lastname">Last Name:</label>
+    <input type="text" name="account_lastname" id="accountLastname" required value="<%= locals.account_lastname %>">
+
+    <label for="email">Email:</label>
+    <input type="email" name="account_email" id="accountEmail" required value="<%= locals.account_email %>">
+
+    <label for="password">Password:</label>
+    <div class="password">There must be at least 12 characters, one must be a number, one must be a lowercase letter, one must be a capital letter, and one must be a non-alphanumeric character.</div>
+    <input type="password" name="account_password" id="password" placeholder="Enter your password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+
+    <button type="submit">Register</button>
+  </form>
+
+  <div class="signup-link">
+    Already have an account? <a href="/account/login">Login</a>
+  </div>
+</div>

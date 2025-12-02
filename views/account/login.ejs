@@ -1,0 +1,23 @@
+<div class="login-container">
+  <% if (title) { %>
+    <h1><%= title %></h1>
+  <% } else {
+    res.redirect('/')
+  } %>
+
+  <%- messages() %>
+
+  <form id="loginForm" action="/account/login" method="post">
+    <label for="email">Email:</label>
+    <input type="email" name="account_email" id="email" placeholder="Enter your email" required>
+
+    <label for="password">Password:</label>
+    <input type="password" name="account_password" id="password" placeholder="Enter your password" required>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <div class="signup-link">
+    No account? <a href="/account/register">Sign-up</a>
+  </div>
+</div>
