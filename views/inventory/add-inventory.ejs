@@ -1,0 +1,58 @@
+
+  <% if (title) { %>
+    <h1><%= title %></h1>
+  <% } else {
+    res.redirect('/')
+  } %>
+  
+  <% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
+ 
+  <%- messages() %>
+
+<div class="login-container">
+  <p class="required">ALL FIELDS ARE REQUIRED</p>
+  <div class="newCar">
+    <form action="/inv/add-inventory" method="post">
+    <!-- Classification dropdown rendered directly -->
+    <label for="classificationList">Classification:</label>
+    <%- classificationList %>
+
+    <!-- Make -->
+    <label for="make">Make:</label>
+    <input type="text" name="inv_make" id="make" placeholder="Enter vehicle make" required value="<%= locals.inv_make || '' %>">
+        
+    <!-- Model -->
+    <label for="model">Model:</label>
+    <input type="text" name="inv_model" id="model" placeholder="Enter vehicle model" required value="<%= locals.inv_model || '' %>">
+        
+    <!-- Year -->
+    <label for="year">Year:</label>
+    <input type="number" name="inv_year" id="year" placeholder="Enter vehicle year" min="1900" max="2100" required value="<%= locals.inv_year || '' %>">
+        
+    <!-- Description -->
+    <label for="description">Description:</label>
+    <textarea name="inv_description" id="description" placeholder="Enter vehicle description" required><%= locals.inv_description || '' %></textarea>
+        
+    <!-- Price -->
+    <label for="price">Price:</label>
+    <input type="number" name="inv_price" id="price" placeholder="Enter vehicle price" min="0" required value="<%= locals.inv_price || '' %>">
+        
+    <!-- Miles -->
+    <label for="miles">Miles:</label>
+    <input type="number" name="inv_miles" id="miles" placeholder="Enter vehicle mileage" min="0" required value="<%= locals.inv_miles || '' %>">
+        
+    <!-- Color -->
+    <label for="color">Color:</label>
+    <input type="text" name="inv_color" id="color" placeholder="Enter vehicle color" required value="<%= locals.inv_color || '' %>">
+        
+    <!-- Submit button -->
+    <button type="submit">Add Car</button>
+    </form>
+  </div>
+</div>

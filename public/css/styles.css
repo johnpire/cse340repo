@@ -196,7 +196,7 @@ h1 {
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  width: 300px;
+  max-width: 500px;
   margin: 2rem auto;
   text-align: center;
 }
@@ -256,9 +256,9 @@ form button:hover {
   text-decoration: underline;
 }
 
-.password {
+.required {
   font-style: italic;
-  font-size: 12px;
+  font-size: 15px;
   color: red;
   margin: 2px;
 }
@@ -381,6 +381,118 @@ footer {
 #error505 {
   color: white;
   text-decoration: none;
+}
+
+/* MANAGEMENT VIEW */
+/* Management View Styling */
+.managementView {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.managementView a {
+  display: block;
+  margin: 15px 0;
+  padding: 15px;
+  background-color: var(--primary);
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: larger;
+}
+
+.managementView a:hover {
+  background-color: #0f240e;
+}
+
+/* ADD CLASSIFICATION */
+.classification {
+  background-color: var(--secondary);
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 400px;
+  margin: 2rem auto;
+}
+
+.classification label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.classification input[type="text"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.classification button {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary);
+  color: var(--secondary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.classification button:hover {
+  opacity: 0.8;
+}
+
+/* Add New Car Section */
+.newCar form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+  max-width: 500px;
+}
+
+.newCar label {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.newCar input,
+.newCar textarea,
+.newCar select {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+}
+
+.newCar textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.newCar input[readonly] {
+  background: #f0f0f0;
+  color: #555;
+  cursor: not-allowed;
+}
+
+.newCar button {
+  margin-top: 1rem;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--primary);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.newCar button:hover {
+  opacity: 0.9;
 }
 
 /* DESKTOP GRID VIEW */

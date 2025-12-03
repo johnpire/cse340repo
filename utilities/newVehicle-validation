@@ -1,0 +1,140 @@
+const invModel = require("../models/inventory-model")
+const utilities = require(".")
+const { body, validationResult } = require("express-validator")
+
+const validate = {}
+
+/*  **********************************
+ *  Car Addition Validation Rules
+ * ********************************* */
+validate.carAdditionRules = () => {
+  return [
+
+    // Make is required // also check if there's already an existing car
+    body("inv_make")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Please provide a vehicle make.")
+      .custom(async (inv_make, { req }) => {
+        const { inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id } = req.body
+      
+        const vehicleExists = await invModel.checkExistingVehicle(
+          inv_make, inv_model, inv_year, inv_description, 
+          inv_image, inv_thumbnail, inv_price, inv_miles, 
+          inv_color, classification_id
+        )
+        
+        if (vehicleExists) {
+          throw new Error("A vehicle with these exact specifications already exists.")
+        }
+      }),
+
+    // Model is required
+    body("inv_model")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Please provide a vehicle model."),
+
+    // Year must be valid
+    body("inv_year")
+      .trim()
+      .isInt({ min: 1900, max: new Date().getFullYear() + 1 })
+      .withMessage("Please provide a valid year."),
+
+    // Description is required
+    body("inv_description")
+      .trim()
+      .notEmpty()
+      .withMessage("Please provide a description."),
+
+    // Image path is required
+    body("inv_image")
+      .trim()
+      .notEmpty()
+      .withMessage("Image path is required."),
+
+    // Thumbnail path is required
+    body("inv_thumbnail")
+      .trim()
+      .notEmpty()
+      .withMessage("Thumbnail path is required."),
+
+    // Price must be a positive number
+    body("inv_price")
+      .trim()
+      .isFloat({ min: 0 })
+      .withMessage("Please provide a valid price."),
+
+    // Miles must be a number >= 0
+    body("inv_miles")
+      .trim()
+      .isInt({ min: 0 })
+      .withMessage("Please provide valid mileage."),
+
+    // Color is required
+    body("inv_color")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Please provide a color."),
+
+    // Classification ID must exist
+    body("classification_id")
+      .trim()
+      .notEmpty()
+      .isInt()
+      .withMessage("Please choose a classification.")
+  ]
+}
+
+/* ******************************
+ * Check data and return errors or continue
+ * ***************************** */
+validate.checkCarData = async (req, res, next) => {
+
+  const {
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+    classification_id
+  } = req.body
+
+  let errors = []
+  errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    let classificationList = await utilities.buildClassificationList(classification_id)
+
+    res.render("inventory/add-inventory", {
+      errors,
+      title: "Add Vehicle",
+      nav,
+      classificationList,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id,
+    })
+
+    return
+  }
+
+  next()
+}
+
+module.exports = validate

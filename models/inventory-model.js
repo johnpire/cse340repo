@@ -48,4 +48,76 @@ async function getInventoryById(inv_id) {
   }
 }
 
-module.exports = { getClassifications, getInventoryByClassificationId, getInventoryById }
+/* *****************************
+*   Add Classification
+* *************************** */
+async function addClassification(classification_name){
+  try {
+    const sql = "INSERT INTO classification (classification_name) VALUES ($1) RETURNING *"
+    return await pool.query(sql, [classification_name])
+  } catch (error) {
+    return error.message
+  }
+}
+
+/* **********************
+ *   Check for existing classification
+ * ********************* */
+async function checkExistingClassification(classification_name){
+  try {
+    const sql = "SELECT * FROM classification WHERE classification_name = $1"
+    const classification = await pool.query(sql, [classification_name])
+    return classification.rowCount
+  } catch (error) {
+    console.error("addClassification error:", error)
+    throw error
+  }
+}
+
+/* *****************************
+*   Add New Vehicle
+* *************************** */
+async function addNewVehicle(inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id){
+  try {
+    const sql = "INSERT INTO inventory (inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *"
+    return await pool.query(sql, [inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id])
+  } catch (error) {
+    return error.message
+  }
+}
+
+	async function checkExistingVehicle(inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id){
+  try {
+    const sql = `SELECT * FROM inventory 
+                 WHERE inv_make = $1 
+                 AND inv_model = $2 
+                 AND inv_year = $3 
+                 AND inv_description = $4 
+                 AND inv_image = $5 
+                 AND inv_thumbnail = $6 
+                 AND inv_price = $7 
+                 AND inv_miles = $8 
+                 AND inv_color = $9 
+                 AND classification_id = $10`
+    
+    const vehicle = await pool.query(sql, [
+      inv_make, 
+      inv_model, 
+      inv_year, 
+      inv_description, 
+      inv_image, 
+      inv_thumbnail, 
+      inv_price, 
+      inv_miles, 
+      inv_color, 
+      classification_id
+    ])
+    
+    return vehicle.rowCount
+  } catch (error) {
+    console.error("checkExistingVehicle error:", error)
+    throw error
+  }
+}
+
+module.exports = { getClassifications, getInventoryByClassificationId, getInventoryById, addClassification, checkExistingClassification, addNewVehicle, checkExistingVehicle }
