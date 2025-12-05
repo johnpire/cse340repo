@@ -38,7 +38,15 @@
     <!-- Description -->
     <label for="description">Description:</label>
     <textarea name="inv_description" id="description" placeholder="Enter vehicle description" required><%= locals.inv_description || '' %></textarea>
-        
+    
+    <!-- Image | note: this is non-modifable for now -->
+    <label for="image-path">Image Path:</label>
+    <input type="text" name="inv_image" id="image-path" value="/images/vehicles/no-image.png" readonly>
+
+    <!-- Thumbnail | note: this is non-modifable for now -->
+    <label for="thumbnail-path">Thumbnail Path:</label>
+    <input type="text" name="inv_thumbnail" id="thumbnail-path" value="/images/vehicles/no-image-tn.png" readonly>
+
     <!-- Price -->
     <label for="price">Price:</label>
     <input type="number" name="inv_price" id="price" placeholder="Enter vehicle price" min="0" required value="<%= locals.inv_price || '' %>">

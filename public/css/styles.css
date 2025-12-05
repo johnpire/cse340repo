@@ -208,7 +208,7 @@ h1 {
 }
 
 .flash-message {
-  color: red;
+  color: darkred;
   margin-bottom: 1rem;
   font-weight: bold;
 }
@@ -259,7 +259,7 @@ form button:hover {
 .required {
   font-style: italic;
   font-size: 15px;
-  color: red;
+  color: darkred;
   margin: 2px;
 }
 
