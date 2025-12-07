@@ -9,13 +9,13 @@
 
     <!-- form for updating account information -->
     <form action="/account/update" method="post">
-        <label for="firstname">First Name:</label>
+        <label for="accountFirstname">First Name:</label>
         <input type="text" name="account_firstname" id="accountFirstname" required value="<%= locals.account_firstname %>">
 
-        <label for="lastname">Last Name:</label>
+        <label for="accountLastname">Last Name:</label>
         <input type="text" name="account_lastname" id="accountLastname" required value="<%= locals.account_lastname %>">
 
-        <label for="email">Email:</label>
+        <label for="accountEmail">Email:</label>
         <input type="email" name="account_email" id="accountEmail" required value="<%= locals.account_email %>">
 
         <button type="submit">Update Account</button>
