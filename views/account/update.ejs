@@ -1,0 +1,44 @@
+<div class="update-forms-container">
+    <% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+    <%- messages() %>
+
+    <!-- form for updating account information -->
+    <form action="/account/update" method="post">
+        <label for="firstname">First Name:</label>
+        <input type="text" name="account_firstname" id="accountFirstname" required value="<%= locals.account_firstname %>">
+
+        <label for="lastname">Last Name:</label>
+        <input type="text" name="account_lastname" id="accountLastname" required value="<%= locals.account_lastname %>">
+
+        <label for="email">Email:</label>
+        <input type="email" name="account_email" id="accountEmail" required value="<%= locals.account_email %>">
+
+        <button type="submit">Update Account</button>
+
+        <!-- get account_id from local, store it here but should be hidden -->
+        <input type="hidden" name="account_id"
+        <% if(locals.account_id) { %> value="<%= locals.account_id %>"
+        <% } %>>
+    </form>
+
+    <!-- form for updating password information -->
+    <h2 class="title">Update Password</h2>
+    <form action="/account/change-password" method="post">
+        <p class="required">Note: Your original password will be changed</p>
+        <label for="password">Password:</label>
+        <input type="password" name="account_password" id="password" placeholder="Enter your password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+        <div class="required">There must be at least 12 characters, one must be a number, one must be a lowercase letter, one must be a capital letter, and one must be a non-alphanumeric character.</div>
+
+        <button type="submit">Update Password</button>
+
+        <!-- get account_id from local, store it here but should be hidden -->
+        <input type="hidden" name="account_id"
+        <% if(locals.account_id) { %> value="<%= locals.account_id %>"
+        <% } %>>
+    </form>
+</div>

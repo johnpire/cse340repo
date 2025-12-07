@@ -24,6 +24,11 @@ p, li {
   font-size: larger;
 }
 
+.title {
+  font-family: var(--font-heading);
+  color: var(--primary);
+}
+
 /* HEADER */
 
 #top-header {
@@ -495,6 +500,59 @@ footer {
   opacity: 0.9;
 }
 
+/* Account Management Styles */
+.account-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--secondary);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.account-container h2 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.account-actions {
+  margin: 2rem 0;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-family: var(--font-body);
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0f240e;
+}
+
+.inventory-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--primary);
+}
+
+.inventory-section h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.notice {
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--secondary);
+  border-radius: 8px;
+  color: var(--primary);
+}
+
 /* DESKTOP GRID VIEW */
 @media (min-width: 1067px) {
   h2 {
@@ -565,7 +623,18 @@ footer {
   .vehicleDetails h2 {
     font-size: 2rem;
   }
+
+  /* form */
+  .update-forms-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+  }
 }
+
+  
 
 /* EXTRA-SMALL VIEW */
 @media (max-width: 500px) {

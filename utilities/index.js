@@ -1,4 +1,5 @@
 const invModel = require("../models/inventory-model")
+const AccModel = require("../models/account-model")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 const Util = {}
@@ -131,6 +132,44 @@ Util.checkLogin = (req, res, next) => {
     return res.redirect("/account/login")
   }
  }
+
+/* ****************************************
+* Middleware to check the user's account type utilizing JWT
+* Only allows Employee or Admin access
+**************************************** */
+Util.checkAuthorization = async (req, res, next) => {
+  if (req.cookies.jwt) {
+    jwt.verify(
+      req.cookies.jwt,
+      process.env.ACCESS_TOKEN_SECRET,
+      async function (err, accountData) {
+        if (err) {
+          req.flash("notice", "Please log in")
+          res.clearCookie("jwt")
+          return res.redirect("/account/login")
+        }
+      
+        try {
+          const result = await AccModel.getAccountByEmail(accountData.account_email)
+          
+          // Check if account type is Employee or Admin
+          if (result && (result.account_type === 'Employee' || result.account_type === 'Admin')) {
+            next() // this method is better than the initial boolean concept of this function
+          } else {
+            req.flash("notice", "You do not have permission to access this resource.")
+            return res.redirect("/account/login")
+          }
+        } catch (error) {
+          req.flash("notice", "Access denied.")
+          return res.redirect("/account/login")
+        }
+      }
+    )
+  } else {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+}
 
 /* ****************************************
  * Middleware For Handling Errors
