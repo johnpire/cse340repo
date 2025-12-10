@@ -245,6 +245,7 @@ async function changePassword(req, res) {
       return res.redirect("/account/")
     })
   } else {
+    const accountData = res.locals.accountData
     req.flash("notice", "Sorry, the password update failed.")
     res.status(500).render("account/update", {
       title: "Update Account",

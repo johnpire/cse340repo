@@ -608,7 +608,7 @@ footer {
 
 .cart-item-color {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--primary);
 }
 
 .cart-item-actions {
@@ -616,7 +616,7 @@ footer {
 }
 
 .btn-remove {
-  background-color: #c41e3a;
+  background-color: var(--primary);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -626,7 +626,7 @@ footer {
 }
 
 .btn-remove:hover {
-  background-color: #a01828;
+  background-color: #0f240e;
 }
 
 .cart-summary {
@@ -667,11 +667,11 @@ footer {
 }
 
 .form-btn .btn {
-  background-color: #c41e3a;
+  background-color: var(--primary);
 }
 
 .form-btn .btn:hover {
-  background-color: #a01828;
+  background-color: #0f240e;
 }
 
 .empty-cart {
