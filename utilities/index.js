@@ -63,7 +63,7 @@ Util.buildClassificationGrid = async function(data){
 /* **************************************
 * Build the vehicle details view HTML upon classification click
 * ************************************ */
-Util.buildVehicleDetail = async function(vehicle){
+Util.buildVehicleDetail = async function(vehicle, loggedin = false, inCart = false){
   if (!vehicle) return '<p class="notice">Sorry, no matching vehicles could be found.</p>';
   let detail = '';
   
@@ -74,6 +74,25 @@ Util.buildVehicleDetail = async function(vehicle){
   detail += '<p><strong>Description: </strong>' + vehicle.inv_description + '</p>';
   detail += '<p><strong>Color: </strong>' + vehicle.inv_color + '</p>';
   detail += '<p><strong>Miles: </strong>' + new Intl.NumberFormat('en-US').format(vehicle.inv_miles) + '</p>';
+  
+  // Add to cart button logic
+  if (loggedin) {
+    if (inCart) {
+      // if item already in cart | might be more convenient to put this logic here than in controller
+      detail += '<p class="in-cart-message">✓ This vehicle is already in your cart</p>';
+      detail += '<a href="/cart" class="btn btn-cart">View Cart</a>';
+    } else {
+      // if not in cart
+      detail += '<form action="/cart/add" method="post" class="add-to-cart-form" onsubmit="return confirm(\'Add this vehicle to your cart?\')">';
+      detail += '<input type="hidden" name="inv_id" value="' + vehicle.inv_id + '">';
+      detail += '<button type="submit" class="btn">Add to Cart</button>';
+      detail += '</form>';
+    }
+  } else {
+    // if not logged in
+    detail += '<p class="login-prompt"><a href="/account/login">Log in</a> to add to cart</p>';
+  }
+
   detail += '</div>';
 
   return detail;
@@ -169,6 +188,64 @@ Util.checkAuthorization = async (req, res, next) => {
     req.flash("notice", "Please log in.")
     return res.redirect("/account/login")
   }
+}
+
+/* **************************************
+* Build the cart items view HTML
+* ************************************ */
+Util.buildCartView = async function(cartItems){
+  let cartContent = ''
+  
+  if(cartItems && cartItems.length > 0){
+    cartContent += '<div class="cart-items">'
+    
+    cartItems.forEach(item => {
+      cartContent += '<div class="cart-item">'
+      cartContent += '<a href="/inv/detail/' + item.inv_id + '">'
+      cartContent += '<img src="' + item.inv_thumbnail + '" alt="' + item.inv_make + ' ' + item.inv_model + '">'
+      cartContent += '</a>'
+      
+      cartContent += '<div class="cart-item-info">'
+      cartContent += '<h3><a href="/inv/detail/' + item.inv_id + '">'
+      cartContent += item.inv_make + ' ' + item.inv_model + ' ' + item.inv_year
+      cartContent += '</a></h3>'
+      cartContent += '<p class="cart-item-price">$' + new Intl.NumberFormat('en-US').format(item.inv_price) + '</p>'
+      cartContent += '<p class="cart-item-color">Color: ' + item.inv_color + '</p>'
+      cartContent += '</div>'
+      
+      cartContent += '<div class="cart-item-actions">'
+      cartContent += '<form action="/cart/remove" method="post">'
+      cartContent += '<input type="hidden" name="cart_id" value="' + item.cart_id + '">'
+      cartContent += '<button type="submit" class="btn-remove">Remove</button>'
+      cartContent += '</form>'
+      cartContent += '</div>'
+      
+      cartContent += '</div>'
+    })
+    
+    cartContent += '</div>'
+    
+    // Cart Summary
+    const total = cartItems.reduce((sum, item) => sum + parseFloat(item.inv_price), 0) // will total the price of all items in cart
+    cartContent += '<div class="cart-summary">'
+    cartContent += '<h3>Cart Summary</h3>'
+    cartContent += '<p class="cart-count">' + cartItems.length + ' item' + (cartItems.length !== 1 ? 's' : '') + '</p>'
+    cartContent += '<p class="cart-total">Total: $' + new Intl.NumberFormat('en-US').format(total) + '</p>'
+    cartContent += '<a href="/" class="btn">Continue Shopping</a>'
+    cartContent += '<form action="/cart/clear" method="post" class="form-btn" onsubmit="return confirm(\'Clear all items from cart?\')">'
+    cartContent += '<button type="submit" class="btn">Clear Cart</button>'
+    cartContent += '</form>'
+    cartContent += '</div>'
+    
+  } else {
+    // if cart is empty
+    cartContent += '<div class="empty-cart">'
+    cartContent += '<p class="notice">Your cart is empty</p>'
+    cartContent += '<a href="/" class="btn">Browse Vehicles</a>'
+    cartContent += '</div>'
+  }
+  
+  return cartContent
 }
 
 /* ****************************************

@@ -19,6 +19,7 @@ const pool = require('./database/')
 const accountRoute = require("./routes/accountRoute")
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
+const cartRoute = require("./routes/cartRoute")
 
 /* ***********************
  * Middleware
@@ -60,6 +61,8 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inv", inventoryRoute)
 // Account routes
 app.use("/account", require("./routes/accountRoute"))
+// Cart routes
+app.use("/cart", cartRoute)
 
 // Error 500
 app.use("/error", errorRoute)

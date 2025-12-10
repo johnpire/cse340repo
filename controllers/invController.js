@@ -24,14 +24,34 @@ invCont.buildByClassificationId = async function (req, res, next) {
  * retrieve the data for a specific vehicle in inventory, based on the inventory id
  * ************************** */
 invCont.buildByInventoryId = async function (req, res, next) {
-  const vehicle = await invModel.getInventoryById(req.params.inv_id);
-  const vehicleDetail = await utilities.buildVehicleDetail(vehicle);
-  let nav = await utilities.getNav();
-  res.render("inventory/vehicleDetail", { 
-    vehicleDetail, 
+  const inv_id = req.params.inv_id
+  const vehicle = await invModel.getInventoryById(inv_id)
+  
+  if (!vehicle) {
+    req.flash("notice", "Vehicle not found")
+    return res.redirect("/")
+  }
+  
+  let nav = await utilities.getNav()
+  
+  // Check if logged in and if item is in cart
+  let inCart = false
+  if (res.locals.loggedin && res.locals.accountData) {
+    const cartModel = require("../models/cart-model")
+    inCart = await cartModel.checkIfInCart(res.locals.accountData.account_id, inv_id)
+  }
+  
+  const vehicleDetail = await utilities.buildVehicleDetail(
+    vehicle, 
+    res.locals.loggedin, 
+    inCart
+  )
+  
+  res.render("./inventory/vehicleDetail", {
     title: vehicle.inv_make + ' ' + vehicle.inv_model,
-    nav
-  });
+    nav,
+    vehicleDetail,
+  })
 }
 
 /* ***************************

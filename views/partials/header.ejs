@@ -5,6 +5,7 @@
     <div id="tools">
         <%# note how log-in data is managed in Util.checkJWTToken. Also I'm using it as a reference for this  %>
         <% if (typeof loggedin !== 'undefined' && loggedin) { %> <%# cookies will be created upon log-in so it will not recognize loggedin beforehand %>
+          <a title="Go to cart" href="/cart">View Cart</a>
           <a title="Go to account management" href="/account">Welcome <%= accountData.account_firstname %></a>
           <a title="Click to logout" href="/account/logout">Logout</a>
         <% } else { %>
